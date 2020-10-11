@@ -20,7 +20,7 @@ $ npm install dns2
 
 ### Example Client
 
-Lookup any records available for the domain `lsong.org`.
+Lookup A records available for the `google.com`.
 
 ```js
 const DNS = require('dns2');
@@ -33,10 +33,32 @@ const dns = new DNS();
 })();
 ```
 
+### Example Client Session
+
+If you are going to make a lot of DNS requests, you should use the
+DNS.UDPSession class instead. It must be initialized before it can be used
+and shutdown to allow node to exit.
+
+```js
+const DNS = require('dns2');
+
+const dns = new DNS.UDPSession();
+
+dns.init()
+
+(async () => {
+  const result = await dns.resolveA('google.com');
+  console.log(result.answers);
+  const result2 = await dns.resolveA('facebook.com');
+  console.log(result2.answers);
+  dns.shutdown()
+})();
+```
+
 ### Example Server
 
 ```js
-const dns = require('..');
+const dns = require('dns2');
 
 const { Packet } = dns;
 
